@@ -19,8 +19,14 @@ import type { Business } from "@/app/api/nearby/route";
 
 type Status = "idle" | "loading" | "done" | "no-gps" | "error";
 
+type GpsData = {
+  latitude: number;
+  longitude: number;
+};
+
 export default function ImagePage() {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [gps, setGps] = useState<GpsData | null>(null);
   const [loaded, setLoaded] = useState(false);
   const [businesses, setBusinesses] = useState<Business[]>([]);
   const [status, setStatus] = useState<Status>("idle");
