@@ -81,8 +81,12 @@ export default function ImagePage() {
   }, []);
 
   return (
-    <Container maxWidth="md" sx={{ py: { xs: 4, sm: 8 } }}>
-      <Stack spacing={3} alignItems="center">
+    <Container maxWidth="lg" sx={{ py: { xs: 4, sm: 8 } }}>
+      <Stack
+        direction={{ xs: "column", md: "row" }}
+        spacing={{ xs: 3, md: 4 }}
+        alignItems={{ xs: "center", md: "flex-start" }}
+      >
         {imageSrc ? (
           <Box
             component="img"
@@ -92,17 +96,30 @@ export default function ImagePage() {
               maxWidth: "100%",
               height: "auto",
               borderRadius: 1,
+              flexShrink: 0,
+              width: { md: "60%" },
             }}
           />
         ) : (
           loaded && (
-            <Typography variant="body1" color="text.secondary">
-              No image found. Please upload one.
-            </Typography>
+            <Stack spacing={2} alignItems="center">
+              <Typography variant="body1" color="text.secondary">
+                No image found. Please upload one.
+              </Typography>
+              <Link
+                component={NextLink}
+                href="/"
+                variant="body1"
+                underline="hover"
+              >
+                Upload a New Image
+              </Link>
+            </Stack>
           )
         )}
 
         {imageSrc && loaded && (
+          <Stack spacing={3} sx={{ width: "100%", flex: 1 }}>
           <Paper variant="outlined" sx={{ width: "100%", p: { xs: 2, sm: 3 } }}>
             <Typography variant="h6" gutterBottom>
               Nearby Businesses
@@ -150,11 +167,12 @@ export default function ImagePage() {
                 </Typography>
               ))}
           </Paper>
-        )}
 
-        <Link component={NextLink} href="/" variant="body1" underline="hover">
-          Upload a New Image
-        </Link>
+          <Link component={NextLink} href="/" variant="body1" underline="hover">
+            Upload a New Image
+          </Link>
+          </Stack>
+        )}
       </Stack>
     </Container>
   );
