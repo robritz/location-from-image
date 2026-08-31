@@ -7,15 +7,27 @@ import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { STORAGE_KEY } from "@/constants";
+import { getImage } from "@/lib/imageStore";
 
 export default function ImagePage() {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    setImageSrc(sessionStorage.getItem(STORAGE_KEY));
-    setLoaded(true);
+    let objectUrl: string | null = null;
+
+    getImage()
+      .then((blob) => {
+        if (blob) {
+          objectUrl = URL.createObjectURL(blob);
+          setImageSrc(objectUrl);
+        }
+      })
+      .finally(() => setLoaded(true));
+
+    return () => {
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
   }, []);
 
   return (

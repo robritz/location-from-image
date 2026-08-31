@@ -9,7 +9,7 @@ import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { STORAGE_KEY } from "@/constants";
+import { saveImage } from "@/lib/imageStore";
 
 export default function Home() {
   const router = useRouter();
@@ -28,15 +28,11 @@ export default function Home() {
     });
   };
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      sessionStorage.setItem(STORAGE_KEY, reader.result as string);
-      router.push("/image");
-    };
-    reader.readAsDataURL(file);
+    await saveImage(file);
+    router.push("/image");
   };
 
   return (
