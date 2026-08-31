@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, ChangeEvent } from "react";
+import { useRouter } from "next/navigation";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
@@ -8,8 +9,10 @@ import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { STORAGE_KEY } from "@/constants";
 
 export default function Home() {
+  const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -23,6 +26,17 @@ export default function Home() {
       if (prev) URL.revokeObjectURL(prev);
       return URL.createObjectURL(selected);
     });
+  };
+
+  const handleContinue = () => {
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      sessionStorage.setItem(STORAGE_KEY, reader.result as string);
+      router.push("/image");
+    };
+    reader.readAsDataURL(file);
   };
 
   return (
@@ -87,6 +101,12 @@ export default function Home() {
             onChange={handleFileChange}
           />
         </Paper>
+
+        {file && (
+          <Button variant="outlined" size="large" onClick={handleContinue}>
+            Continue
+          </Button>
+        )}
       </Stack>
     </Container>
   );
