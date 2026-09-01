@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef, ChangeEvent } from "react";
-import { useRouter } from "next/navigation";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -15,16 +14,18 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import exifr from "exifr";
-import { saveImage, saveGps, type GpsData } from "@/lib/imageStore";
 import type { Business } from "@/app/api/nearby/route";
 
 type Status = "idle" | "loading" | "done" | "no-gps" | "error";
 
+type GpsData = {
+  latitude: number;
+  longitude: number;
+};
+
 export default function Home() {
-  const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [gps, setGps] = useState<GpsData | null>(null);
   const [businesses, setBusinesses] = useState<Business[]>([]);
   const [status, setStatus] = useState<Status>("idle");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -55,7 +56,6 @@ export default function Home() {
     } catch {
       // Ignore parse errors; treated as "no geolocation data".
     }
-    setGps(coords);
 
     if (!coords) {
       setStatus("no-gps");
@@ -75,14 +75,6 @@ export default function Home() {
     } catch {
       setStatus("error");
     }
-  };
-
-  const handleContinue = async () => {
-    if (!file) return;
-
-    await saveImage(file);
-    await saveGps(gps);
-    router.push("/image");
   };
 
   return (
@@ -203,7 +195,6 @@ export default function Home() {
               ))}
           </Paper>
         )}
-        
       </Stack>
     </Container>
   );
