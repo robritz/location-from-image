@@ -2,6 +2,12 @@ const DB_NAME = "location-from-image";
 const DB_VERSION = 1;
 const STORE_NAME = "images";
 const IMAGE_KEY = "uploaded";
+const GPS_KEY = "uploaded-gps";
+
+export type GpsData = {
+  latitude: number;
+  longitude: number;
+};
 
 function openDB(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
@@ -52,5 +58,20 @@ export function getImage(): Promise<Blob | undefined> {
 export async function clearImage(): Promise<void> {
   await withStore<undefined>("readwrite", (store) =>
     store.delete(IMAGE_KEY),
+  );
+  await withStore<undefined>("readwrite", (store) => store.delete(GPS_KEY));
+}
+
+// GPS coordinates extracted from the image's EXIF data at selection time.
+// `null` means the image was processed but contained no geolocation data.
+export async function saveGps(gps: GpsData | null): Promise<void> {
+  await withStore<IDBValidKey>("readwrite", (store) =>
+    store.put(gps, GPS_KEY),
+  );
+}
+
+export function getGps(): Promise<GpsData | null | undefined> {
+  return withStore<GpsData | null | undefined>("readonly", (store) =>
+    store.get(GPS_KEY),
   );
 }
