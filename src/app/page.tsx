@@ -36,7 +36,13 @@ export default function Home() {
   };
 
   return (
-    <Container maxWidth="sm" sx={{ py: 8 }}>
+    <Container
+      maxWidth="sm"
+      sx={{
+        pt: 8,
+        pb: "calc(env(safe-area-inset-bottom) + 96px)",
+      }}
+    >
       <Stack spacing={4} alignItems="center">
         <Typography variant="h4" component="h1" fontWeight={600}>
           Location from Image
