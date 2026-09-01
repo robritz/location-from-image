@@ -15,8 +15,7 @@ export type Business = {
   address: string;
 };
 
-// Maximum search radius: 100 feet in meters.
-const MAX_DISTANCE_METERS = 100 * 0.3048;
+const MAX_DISTANCE_METERS = 60;
 
 // Mapbox canonical category IDs for businesses that sell food
 // (excludes grocery stores and supermarkets).

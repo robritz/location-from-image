@@ -19,7 +19,6 @@ If the image has no GPS data (common for screenshots, downloaded images, or phot
 - **Material UI 6** with a dark theme
 - **exifr** for client-side EXIF parsing
 - **Mapbox Search Box API** for nearby-business lookup
-- **IndexedDB** for passing the selected image/coordinates between pages
 
 ## Getting started
 
@@ -70,10 +69,7 @@ src/
 ├── app/
 │   ├── api/nearby/route.ts   # Server route: coords -> nearby businesses (Mapbox)
 │   ├── layout.tsx            # Root layout, MUI theme provider
-│   ├── page.tsx              # Home: image select + EXIF read + results
-│   └── image/                # Secondary image view page
-├── lib/
-│   └── imageStore.ts         # IndexedDB helpers for image + GPS
+│   └── page.tsx              # Home: image select + EXIF read + results
 └── theme.ts                  # MUI dark theme
 ```
 
