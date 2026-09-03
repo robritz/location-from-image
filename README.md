@@ -75,7 +75,7 @@ src/
 
 ## Known limitations (it's a POC)
 
-- Only surfaces `food_and_drink` businesses within a fixed ~100 ft radius.
+- Only surfaces `food_and_drink` businesses within a fixed ~60m radius.
 - No tests, no auth, minimal error handling.
 - Relies entirely on EXIF GPS — images without it produce no result.
 - Not optimized or hardened for production use.
